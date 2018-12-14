@@ -1,0 +1,64 @@
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+# You can always add more config options for more control.
+# We've included some commented out config examples here.
+# Just uncomment any of them to get that config option.
+#
+# For full config options, check the docs:
+#    docs.serverless.com
+#
+# Happy Coding!
+
+service: tgr-lambda-elastic-dev # NOTE: update this with your service name
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+# frameworkVersion: "=X.X.X"
+custom:
+  currentStage: ${opt:stage, 'dev'}
+  environments:
+    dev:
+      bucket: tgr-lambda-elastic
+      region: us-east-1
+      role: arn:aws:iam::080540609156:role/PatagoniaDevRole
+      vpc:
+        securityGroupIds:
+        - sg-007f6a8ffb5d34924
+        subnetIds:
+        - subnet-0717e64b9df6a7701
+        - subnet-060c756b0c118fa37
+      elasticsearchUrl: search-dev-contribuciones-qj3q3jeqbkw5ix5ybdrdlpfqq4.us-east-1.es.amazonaws.com
+    prod:
+      region: us-east-2
+#      variables:
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  region: ${self:custom.environments.${self:custom.currentStage}.region}
+  stage: ${self:custom.currentStage}
+  #  environment: ${self:custom.environments.${self:custom.currentStage}.variables}
+  #role: ${self:custom.environments.${self:custom.currentStage}.role}
+  #vpc: ${self:custom.environments.${self:custom.currentStage}.vpc}
+
+package:
+  exclude:
+  - test/*
+  - package-lock.json
+  - package.json
+  - tgr-parse-proxies-poc-dev/*
+
+functions:
+  direccion:
+    handler: direccion.handler
+    events:
+      - http:
+          path: search/{tipo}
+          method: post
+          cors: true
+
+    environment:
+      elasticsearchUrl: ${self:custom.environments.${self:custom.currentStage}.elasticsearchUrl}
+
