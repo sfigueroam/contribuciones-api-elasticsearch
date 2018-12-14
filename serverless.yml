@@ -30,6 +30,7 @@ custom:
         - subnet-0717e64b9df6a7701
         - subnet-060c756b0c118fa37
       elasticsearchUrl: search-dev-contribuciones-qj3q3jeqbkw5ix5ybdrdlpfqq4.us-east-1.es.amazonaws.com
+      maxSize: 50
     prod:
       region: us-east-2
 #      variables:
@@ -61,4 +62,5 @@ functions:
 
     environment:
       elasticsearchUrl: ${self:custom.environments.${self:custom.currentStage}.elasticsearchUrl}
+      maxSize: ${self:custom.environments.${self:custom.currentStage}.maxSize}
 
