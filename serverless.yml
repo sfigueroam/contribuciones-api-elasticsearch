@@ -31,6 +31,19 @@ custom:
         - subnet-060c756b0c118fa37
       elasticsearchUrl: search-dev-contribuciones-qj3q3jeqbkw5ix5ybdrdlpfqq4.us-east-1.es.amazonaws.com
       maxSize: 50
+
+    pit:
+      bucket: tgr-lambda-elastic
+      region: us-east-1
+      role: arn:aws:iam::080540609156:role/PatagoniaDevRole
+      vpc:
+        securityGroupIds:
+        - sg-007f6a8ffb5d34924
+        subnetIds:
+        - subnet-0717e64b9df6a7701
+        - subnet-060c756b0c118fa37
+      elasticsearchUrl: search-dev-contribuciones-qj3q3jeqbkw5ix5ybdrdlpfqq4.us-east-1.es.amazonaws.com
+      maxSize: 50
     prod:
       region: us-east-2
 #      variables:
@@ -41,8 +54,8 @@ provider:
   region: ${self:custom.environments.${self:custom.currentStage}.region}
   stage: ${self:custom.currentStage}
   #  environment: ${self:custom.environments.${self:custom.currentStage}.variables}
-  #role: ${self:custom.environments.${self:custom.currentStage}.role}
-  #vpc: ${self:custom.environments.${self:custom.currentStage}.vpc}
+  role: ${self:custom.environments.${self:custom.currentStage}.role}
+  vpc: ${self:custom.environments.${self:custom.currentStage}.vpc}
 
 package:
   exclude:
