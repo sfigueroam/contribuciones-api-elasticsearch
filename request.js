@@ -3,7 +3,7 @@ const https = require('https');
 
 module.exports.elastic = (options, body, callback) => {
 
-    console.log("request elastic");
+
     let response = {
         statusCode: 200,
         headers: {
@@ -15,19 +15,18 @@ module.exports.elastic = (options, body, callback) => {
 
     let responseChunks = [];
 
-    console.log('options', options);
-    console.log('body', body);
+    console.log("Enviando Request");
+    console.log("Body", body);
 
     let req = https.request(options, (res) => {
         res.on('data', (d) => {
             responseChunks.push(d);
-            //console.log('responseChunks.join()->', responseChunks.join());
         });
     });
 
     req.on('close', () => {
         response.body = responseChunks.join('');
-        console.log('response.body', response.body);
+        console.log('Respuesta', response.body);
         callback(null, response);
     });
 

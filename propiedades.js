@@ -4,8 +4,6 @@ const requestElastic = require('./request').elastic;
 module.exports.handler = (event, context, callback) => {
 
     const eventBody = JSON.parse(event.body);
-    console.log('buscando propiedades', event);
-    console.log('eventBody', eventBody);
     console.log('event.body.search', eventBody.search);
     console.log('event.body.tipoPropiedad', eventBody.tipoPropiedad);
     console.log('event.body.size', eventBody.size);
@@ -17,7 +15,6 @@ module.exports.handler = (event, context, callback) => {
     if (eventBody.size === undefined || eventBody.size > process.env.maxSize) {
         size = eventBody.size;
     }
-
 
     body.size = size;
     body.from = 0;
@@ -56,7 +53,7 @@ module.exports.handler = (event, context, callback) => {
         }
     };
 
-    console.log("body", JSON.stringify(body));
+    console.log("Datos Enviados a Elasticsearch", JSON.stringify(body));
     requestElastic(options, body, callback)
 
 }
