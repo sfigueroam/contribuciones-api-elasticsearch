@@ -1,15 +1,24 @@
 'use strict';
 const https = require('https');
 
-module.exports.elastic = (options, body, callback) => {
+function obtenerHeaders (){
+    const accessControlAllowOrigin = process.env.accessControlAllowOrigin;
+    if (accessControlAllowOrigin) {
+        return {
+            'Access-Control-Allow-Origin': accessControlAllowOrigin, // Required for CORS support to work
+            'Access-Control-Allow-Methods': 'POST, OPTIONS'
+        }
+    } else {
+        return undefined;
+    }
 
+}
+
+module.exports.elastic = (options, body, callback) => {
 
     let response = {
         statusCode: 200,
-        headers: {
-            'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-            'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
-        },
+        headers: obtenerHeaders(),
         body: null,
     };
 
@@ -31,15 +40,15 @@ module.exports.elastic = (options, body, callback) => {
     });
 
     req.on('abort', () => {
+        console.error('Error en request', response);
         response.statusCode = 500;
         callback(response, null);
     });
 
-    req.on('error', () => {
+    req.on('error', (err) => {
+        console.error('Error en requesta', err);
         response.statusCode = 503;
         callback(response, null);
-
-
     });
 
     req.write(JSON.stringify(body));

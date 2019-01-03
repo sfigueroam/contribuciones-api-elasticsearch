@@ -31,6 +31,7 @@ custom:
         - subnet-060c756b0c118fa37
       elasticsearchUrl: search-dev-contribuciones-qj3q3jeqbkw5ix5ybdrdlpfqq4.us-east-1.es.amazonaws.com
       maxSize: 50
+      accessControlAllowOrigin: '*'
 
     pit:
       bucket: tgr-lambda-elastic
@@ -71,9 +72,9 @@ functions:
       - http:
           path: search/{tipo}
           method: post
-          cors: true
 
     environment:
       elasticsearchUrl: ${self:custom.environments.${self:custom.currentStage}.elasticsearchUrl}
       maxSize: ${self:custom.environments.${self:custom.currentStage}.maxSize}
+      accessControlAllowOrigin: ${self:custom.environments.${self:custom.currentStage}.accessControlAllowOrigin}
 
